@@ -60,28 +60,21 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
-//Make a delete button
-function deleteBtn(){
-  return `
-  <span class = "trash-can">
-    <i class = "fas fa-trash"></i>
-  </span>`
-}
+//Puts users story in list after making html for said stories
+function putUserStoriesOnPage(){
+  $ownStories.empty();
 
-//Delete story
-async function deleteStory(evt) {
-  const $closestLi = $(evt.target).closest("li");
-  const storyId = $closestLi.attr("id");
-  try {
-    await storyList.removeStory(currentUser, storyId);
-    putStoriesOnPage();
-  } catch (err) {
-    console.error("Error deleting story:", err);
-    alert("Failed to delete story.");
+  if(currentUser.ownStories.length === 0){
+    $ownStories.append("<h5> No stories added by this user yet! </h5>")
   }
+  else{
+    for(let story of currentUser.ownStories){
+      let  $story = generateStoryMarkup(story,true)
+      $ownStories.append($story)
+    }
+  }
+  $ownStories.show()
 }
-
-
 
 //Submit story form
 async function submitNewStory(evt) {
@@ -103,20 +96,25 @@ async function submitNewStory(evt) {
   }
 }
 
-//Puts users story in list after making html for said stories
-function putUserStoriesOnPage(){
-  $ownStories.empty();
+//Make a delete button
+function deleteBtn(){
+  return `
+  <span class = "trash-can">
+    <i class = "fas fa-trash"></i>
+  </span>`
+}
 
-  if(currentUser.ownStories.length === 0){
-    $ownStories.append("<h5> No stories added by this user yet! </h5>")
+//Delete story
+async function deleteStory(evt) {
+  const $closestLi = $(evt.target).closest("li");
+  const storyId = $closestLi.attr("id");
+  try {
+    await storyList.removeStory(currentUser, storyId);
+    putStoriesOnPage();
+  } catch (err) {
+    console.error("Error deleting story:", err);
+    alert("Failed to delete story.");
   }
-  else{
-    for(let story of currentUser.ownStories){
-      let  $story = generateStoryMarkup(story,true)
-      $ownStories.append($story)
-    }
-  }
-  $ownStories.show()
 }
 
 //Make favorite star for story
@@ -129,20 +127,7 @@ return `
   </span>  `
 }
 
-//Puts users favorites on page
-function favoritesListOnPage(){
-  $favoritedStories.empty();
-  if(currentUser.favorites.length === 0){
-    $favoritedStories.append("<h5>No favorite stories have been added!</h5>")
-  }
-  else{
-    for(let story of currentUser.favorites){
-      const $story = generateStoryMarkup(story);
-      $favoritedStories.append($story);
-    }
-  }
-  $favoritedStories.show();
-}
+
 
 //Functionality of favoriting and unfavoriting story
 async function storyFavorites(evt) {
@@ -165,3 +150,18 @@ async function storyFavorites(evt) {
 }
 
 $storiesLists.on("click", ".star", storyFavorites);
+
+//Puts users favorites on page
+function favoritesListOnPage(){
+  $favoritedStories.empty();
+  if(currentUser.favorites.length === 0){
+    $favoritedStories.append("<h5>No favorite stories have been added!</h5>")
+  }
+  else{
+    for(let story of currentUser.favorites){
+      const $story = generateStoryMarkup(story);
+      $favoritedStories.append($story);
+    }
+  }
+  $favoritedStories.show();
+}
