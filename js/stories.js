@@ -118,9 +118,9 @@ async function deleteStory(evt) {
 }
 
 //Make favorite star for story
-function starHtml(story,user){
-  const favorite = user.favorite(story);
-  const starType = favorite ? "fas" : "far";
+function starHtml(story, user){
+  const isFavorite = user.isFavorite.push(story);
+  const starType = isFavorite ? "fas" : "far";
 return `
   <span class = "star">
     <i class = "${starType} fa-star"></i>
