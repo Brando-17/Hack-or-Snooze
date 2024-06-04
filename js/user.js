@@ -20,11 +20,11 @@ async function login(evt) {
   // User.login retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.login(username, password);
-
   $loginForm.trigger("reset");
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
+  putStoriesOnPage();
 }
 
 $loginForm.on("submit", login);
@@ -93,12 +93,11 @@ function saveUserCredentialsInLocalStorage() {
   if (currentUser) {
     localStorage.setItem("token", currentUser.loginToken);
     localStorage.setItem("username", currentUser.username);
-    
   }
 }
 
 /******************************************************************************
- * General UI stuff about users & profiles
+ * General UI stuff about users
  */
 
 /** When a user signs up or registers, we want to set up the UI for them:
@@ -108,21 +107,15 @@ function saveUserCredentialsInLocalStorage() {
  * - generate the user profile part of the page
  */
 
-async function updateUIOnUserLogin() {
+function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
-
   hidePageComponents();
-
-  // re-display stories (so that "favorite" stars can appear)
-  putStoriesOnPage();
   $allStoriesList.show();
+  generateUserProfile();
+  $storiesContainer.show();
 
   updateNavOnLogin();
-  generateUserProfile();
-  $storiesContainer.show()
 }
-
-/** Show a "user profile" part of page built from the current user's info. */
 
 function generateUserProfile() {
   console.debug("generateUserProfile");
