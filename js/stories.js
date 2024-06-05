@@ -2,7 +2,7 @@
 
 // This is the global list of the stories, an instance of StoryList
 let storyList;
-const $storiesLists = $("#all-stories-list")
+
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
@@ -95,7 +95,7 @@ async function submitNewStory(evt) {
     alert("Failed to submit story.");
   }
 }
-
+$submitForm.on("submit",submitNewStory);
 //Make a delete button
 function deleteBtn(){
   return `
