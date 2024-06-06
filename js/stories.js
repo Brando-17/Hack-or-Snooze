@@ -96,6 +96,7 @@ async function submitNewStory(evt) {
   }
 }
 $submitForm.on("submit",submitNewStory);
+
 //Make a delete button
 function deleteBtn(){
   return `
@@ -116,6 +117,8 @@ async function deleteStory(evt) {
     alert("Failed to delete story.");
   }
 }
+$ownStories.on("click", ".trash-can", deleteStory);
+
 
 //Make favorite star for story
 function starHtml(story, user){
